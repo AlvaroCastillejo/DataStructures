@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "room_name": "A"
+  },
+  {
+    "id": 1,
+    "room_name": "B"
+  },
+  {
+    "id": 2,
+    "room_name": "C"
+  },
+  {
+    "id": 3,
+    "room_name": "D"
+  },
+  {
+    "id": 4,
+    "room_name": "E"
+  },
+  {
+    "id": 5,
+    "room_name": "F"
+  }
+]
