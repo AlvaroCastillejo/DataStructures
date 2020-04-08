@@ -9,8 +9,8 @@ import Utils.ScannerInput;
 public class Main {
     public static void main(String[] args) {
         //Database fill-up
-        Connection[] connections = JsonUtils.getConnections("ConnectionM");
-        Room[] rooms = JsonUtils.getRooms("RoomM");
+        Connection[] connections = JsonUtils.getConnections("ConnectionS");
+        Room[] rooms = JsonUtils.getRooms("RoomS");
 
         double[][] adjacencyMatrix = null;
         try {

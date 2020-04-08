@@ -1,7 +1,9 @@
 package Utils;
 
 import Database.Connection;
+import Database.Coordinate;
 import Database.Room;
+import Database.StoreObject;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -13,7 +15,7 @@ public class JsonUtils {
     public static Connection[] getConnections(String fileName){
         String f = new File("").getAbsolutePath();
         try {
-            JsonReader file = new JsonReader(new FileReader(f.concat("/src/assets/" + fileName + ".json")));
+            JsonReader file = new JsonReader(new FileReader(f.concat("/src/assets/Rooms/" + fileName + ".json")));
             Gson gson = new Gson();
             Connection[] connections = gson.fromJson(file, Connection[].class);
             return connections;
@@ -26,10 +28,36 @@ public class JsonUtils {
     public static Room[] getRooms(String fileName){
         String f = new File("").getAbsolutePath();
         try {
-            JsonReader file = new JsonReader(new FileReader(f.concat("/src/Assets/" + fileName + ".json")));
+            JsonReader file = new JsonReader(new FileReader(f.concat("/src/Assets/Rooms/" + fileName + ".json")));
             Gson gson = new Gson();
             Room[] rooms = gson.fromJson(file, Room[].class);
             return rooms;
+        } catch (FileNotFoundException e) {
+            Output.print("Couldn't find \"" + f + "\". Exiting.", "red");
+            System.exit(0);
+        }
+        return null;
+    }
+    public static Coordinate[] getCoordinates(String fileName){
+        String f = new File("").getAbsolutePath();
+        try{
+            JsonReader file = new JsonReader(new FileReader(f.concat("/src/Assets/Trees/" + fileName + ".json")));
+            Gson gson = new Gson();
+            Coordinate[] coordinates = gson.fromJson(file, Coordinate[].class);
+            return coordinates;
+        } catch (FileNotFoundException e) {
+            Output.print("Couldn't find \"" + f + "\". Exiting.", "red");
+            System.exit(0);
+        }
+        return null;
+    }
+    public static StoreObject[] getStoreObjects(String fileName){
+        String f = new File("").getAbsolutePath();
+        try{
+            JsonReader file = new JsonReader(new FileReader(f.concat("/src/Assets/Trees/" + fileName + ".json")));
+            Gson gson = new Gson();
+            StoreObject[] storeObjects = gson.fromJson(file, StoreObject[].class);
+            return storeObjects;
         } catch (FileNotFoundException e) {
             Output.print("Couldn't find \"" + f + "\". Exiting.", "red");
             System.exit(0);
