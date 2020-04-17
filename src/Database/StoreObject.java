@@ -13,6 +13,11 @@ public class StoreObject {
     @Expose
     private Integer price;
 
+    public StoreObject () {
+        this.name = null;
+        this.price = -1;
+    }
+
     public String getName() {
         return name;
     }
@@ -28,5 +33,6 @@ public class StoreObject {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
 
 }
