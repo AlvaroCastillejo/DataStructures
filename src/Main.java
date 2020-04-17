@@ -2,6 +2,7 @@ import Database.Connection;
 import Database.Room;
 import Model.Dijkstra.*;
 import Utils.JsonUtils;
+import Utils.LinkedList.LinkedList;
 import Utils.Logic;
 import Utils.Output;
 import Utils.ScannerInput;
@@ -20,6 +21,9 @@ public class Main {
         }
 
         Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);
+
+
+
 
         Room initialRoom = null;
         do {

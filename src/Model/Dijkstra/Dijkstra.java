@@ -31,6 +31,7 @@ public class Dijkstra {
             Logic.setRoomVisited(current, rooms);
             current = Logic.findMinimumWeightRoom(rooms, d);
         }
+
         return Logic.getSolution(c, rooms, initialRoom, finalRoom);
     }
 }

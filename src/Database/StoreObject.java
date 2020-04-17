@@ -18,6 +18,10 @@ public class StoreObject {
         this.price = -1;
     }
 
+    public StoreObject(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -33,6 +37,5 @@ public class StoreObject {
     public void setPrice(Integer price) {
         this.price = price;
     }
-
 
 }
