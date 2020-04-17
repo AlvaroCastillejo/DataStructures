@@ -1,20 +1,19 @@
 package Utils.LinkedList;
 
 import Utils.Output;
-import Utils.ScannerInput;
 
-public class LinkedList {
+public class LinkedList<E> {
     private int error;
-    private Node head;
-    private Node previous;
+    private Node<E> head;
+    private Node<E> previous;
 
     public LinkedList(){
-        head = new Node();
+        head = new Node<E>();
         previous = head;
     }
 
     public void add(Object element){
-        Node newNode = new Node();
+        Node<E> newNode = new Node<E>();
         newNode.setElement(element);
         newNode.setNext(this.previous.next());
         this.previous.setNext(newNode);
@@ -23,7 +22,7 @@ public class LinkedList {
 
     public void removeCurrent(){
         if(!isAtEnd()){
-            Node aux = this.previous.next();
+            Node<E> aux = this.previous.next();
             this.previous.setNext(this.previous.next().next());
         }
     }
@@ -96,14 +95,5 @@ public class LinkedList {
             add(obj);
             next();
         }
-    }
-
-    public static void main(String[] args) {
-        LinkedList list = new LinkedList();
-        list.add(5);
-        list.add(6);
-        list.add(9);
-        list.remove(3);
-        System.out.println("List: " + list.get(0) + ", " + list.get(1));
     }
 }

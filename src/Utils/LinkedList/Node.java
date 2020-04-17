@@ -1,8 +1,8 @@
 package Utils.LinkedList;
 
-public class Node {
+public class Node<E> {
     private Object element;
-    private Node next;
+    private Node<E> next;
 
     public Node() {
         this.next = null;
@@ -16,11 +16,11 @@ public class Node {
         this.element = element;
     }
 
-    public Node next() {
+    public Node<E> next() {
         return next;
     }
 
-    public void setNext(Node next) {
+    public void setNext(Node<E> next) {
         this.next = next;
     }
 }

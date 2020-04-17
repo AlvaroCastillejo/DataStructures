@@ -13,6 +13,12 @@ public class Main {
         Connection[] connections = JsonUtils.getConnections("ConnectionS");
         Room[] rooms = JsonUtils.getRooms("RoomS");
 
+        LinkedList<Room> linkedListRooms = new LinkedList<>();
+        linkedListRooms.fill(rooms);
+
+        LinkedList<Connection> linkedListConnections = new LinkedList<>();
+        linkedListConnections.fill(connections);
+
         double[][] adjacencyMatrix = null;
         try {
             adjacencyMatrix = new double[rooms.length][rooms.length];
