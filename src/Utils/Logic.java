@@ -2,6 +2,8 @@ package Utils;
 
 import Database.Connection;
 import Database.Room;
+import Utils.LinkedList.LinkedListCustom;
+import Utils.LinkedList.Node;
 
 import java.util.LinkedList;
 
@@ -16,7 +18,7 @@ public class Logic {
     }
 
     public static Room[] getAdjacents(Room current, double[][] adjacencyMatrix, Room[] rooms) {
-        LinkedList<Room> adjacents = new LinkedList<>();
+        LinkedListCustom<Room> adjacents = new LinkedListCustom<>();
 
         for(int i = 0; i < adjacencyMatrix[current.getId()].length; i++){
             if(adjacencyMatrix[current.getId()][i] != -1){
@@ -27,11 +29,11 @@ public class Logic {
         return Logic.linkedListToArray(adjacents);
     }
 
-    private static Room[] linkedListToArray(LinkedList<Room> adjacents) {
+    private static Room[] linkedListToArray(LinkedListCustom<Room> adjacents) {
         Room[] rooms = new Room[adjacents.size()];
 
         for (int i = 0; i < adjacents.size(); i++) {
-            Room room = adjacents.get(i);
+            Room room = (Room)adjacents.get(i);
             rooms[i] = room;
         }
 
@@ -48,6 +50,26 @@ public class Logic {
             for(int i = 0; i < rooms.length; i++){
                 adjacencyMatrix[room.getId()][i] = Logic.getConnectionValue(room.getId(), i, rooms, connections);
             }
+        }
+    }
+
+    public static void initializeAdjacencyList(LinkedListCustom<LinkedListCustom<Room>> adjacencyList, Room[] rooms, Connection[] connections) {
+        for(Room room : rooms){
+            LinkedListCustom<Room> connectedRooms = new LinkedListCustom<>();
+            for(Room innerRoom : rooms){
+                double connectionValue = Logic.getConnectionValue(room.getId(), innerRoom.getId(), rooms, connections);
+                if(connectionValue != -1){
+                    Room newRoom = new Room();
+                    newRoom.setVisited(false);
+                    newRoom.setGoToCost(connectionValue);
+                    newRoom.setRoomName(innerRoom.getRoomName());
+                    newRoom.setId(innerRoom.getId());
+
+                    connectedRooms.add(newRoom);
+                }
+            }
+            connectedRooms.setName(room.getRoomName());
+            adjacencyList.add(connectedRooms);
         }
     }
 

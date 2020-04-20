@@ -2,7 +2,7 @@ import Database.Connection;
 import Database.Room;
 import Model.Dijkstra.*;
 import Utils.JsonUtils;
-import Utils.LinkedList.LinkedList;
+import Utils.LinkedList.LinkedListCustom;
 import Utils.Logic;
 import Utils.Output;
 import Utils.ScannerInput;
@@ -10,27 +10,28 @@ import Utils.ScannerInput;
 public class Main {
     public static void main(String[] args) {
         //Database fill-up
-        Connection[] connections = JsonUtils.getConnections("ConnectionS");
-        Room[] rooms = JsonUtils.getRooms("RoomS");
+        Connection[] connections = JsonUtils.getConnections("ConnectionM");
+        Room[] rooms = JsonUtils.getRooms("RoomM");
 
-        LinkedList<Room> linkedListRooms = new LinkedList<>();
-        linkedListRooms.fill(rooms);
+        LinkedListCustom<Room> linkedListCustomRooms = new LinkedListCustom<>();
+        linkedListCustomRooms.fill(rooms);
 
-        LinkedList<Connection> linkedListConnections = new LinkedList<>();
-        linkedListConnections.fill(connections);
+        LinkedListCustom<Connection> linkedListCustomConnections = new LinkedListCustom<>();
+        linkedListCustomConnections.fill(connections);
 
         double[][] adjacencyMatrix = null;
-        try {
+        /*try {
             adjacencyMatrix = new double[rooms.length][rooms.length];
         } catch (NullPointerException exception){
             Output.print("Unknown error. Something to do with rooms file.", "red");
         }
 
-        Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);
+        Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);*/
 
+        LinkedListCustom<LinkedListCustom<Room>> adjacencyList = new LinkedListCustom<>();
+        Logic.initializeAdjacencyList(adjacencyList, rooms, connections);
 
-
-
+        adjacencyList.print("green");
         Room initialRoom = null;
         do {
             System.out.println("Select initial room: ");

@@ -1,6 +1,7 @@
 package Utils.LinkedList;
 
 public class Node<E> {
+    private String name;
     private Object element;
     private Node<E> next;
 
@@ -21,6 +22,12 @@ public class Node<E> {
     }
 
     public void setNext(Node<E> next) {
-        this.next = next;
+
+            this.next = (Node<E>) next;
+
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 }

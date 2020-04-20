@@ -1,0 +1,30 @@
+[
+    {
+        "name": "rifle",
+        "price": 100
+    },
+    {
+        "name": "shootgun",
+        "price": 200
+    },
+    {
+        "name": "handgun",
+        "price": 300
+    },
+    {
+        "name": "grenade",
+        "price": 75
+    },
+    {
+        "name": "helmet",
+        "price": 60
+    },
+    {
+        "name": "aim",
+        "price": 350
+    },
+    {
+        "name": "robot",
+        "price": 400
+    }
+]

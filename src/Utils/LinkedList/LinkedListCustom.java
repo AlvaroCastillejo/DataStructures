@@ -1,13 +1,24 @@
 package Utils.LinkedList;
 
+import Database.Connection;
+import Database.Room;
 import Utils.Output;
 
-public class LinkedList<E> {
+public class LinkedListCustom<E> {
     private int error;
     private Node<E> head;
     private Node<E> previous;
+    private String name;
 
-    public LinkedList(){
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LinkedListCustom(){
         head = new Node<E>();
         previous = head;
     }
@@ -16,6 +27,12 @@ public class LinkedList<E> {
         Node<E> newNode = new Node<E>();
         newNode.setElement(element);
         newNode.setNext(this.previous.next());
+        if(element instanceof Room){
+            newNode.setName(((Room)element).getRoomName());
+        }
+        if(element instanceof Connection){
+            newNode.setName(((Connection)element).getConnectionName());
+        }
         this.previous.setNext(newNode);
         this.previous = newNode;
     }
@@ -93,6 +110,20 @@ public class LinkedList<E> {
         goToHead();
         for(Object obj : a){
             add(obj);
+            next();
+        }
+    }
+
+    public void print(String color) {
+        goToHead();
+        while (!isAtEnd()){
+            if(getCurrent() instanceof LinkedListCustom){
+                LinkedListCustom<Room> aux = (LinkedListCustom<Room>)this.getCurrent();
+                Output.print("--" + aux.getName() + "--", "white");
+                aux.print("yellow");
+            } else {
+                Output.print(((Room)getCurrent()).getRoomName() + ": " + ((Room)getCurrent()).getConnectionValue(), color);
+            }
             next();
         }
     }

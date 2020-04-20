@@ -14,6 +14,7 @@ public class Room {
     private String roomName;
 
     private boolean visited = false;
+    private double connectionValue;
 
     public Integer getId() {
         return id;
@@ -43,4 +44,11 @@ public class Room {
         return id;
     }
 
+    public void setGoToCost(double connectionValue) {
+        this.connectionValue = connectionValue;
+    }
+
+    public double getConnectionValue() {
+        return connectionValue;
+    }
 }
