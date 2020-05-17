@@ -47,9 +47,11 @@ public class AVLNode {
         r.setObject(object);
         r.setAutoBalanceFactor(0);
 
-
         R = r;
+    }
 
+    public void deleteR(){
+        R = null;
     }
 
     public AVLNode getL() {
@@ -128,5 +130,9 @@ public class AVLNode {
 
     public boolean isLeaf() {
         return L == null && R == null;
+    }
+
+    public void deleteL() {
+        L = null;
     }
 }

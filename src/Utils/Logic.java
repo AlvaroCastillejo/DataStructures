@@ -1,6 +1,7 @@
 package Utils;
 
 import Database.Connection;
+import Database.Coordinate;
 import Database.Room;
 import Utils.LinkedList.LinkedListCustom;
 import Utils.LinkedList.Node;
@@ -153,5 +154,39 @@ public class Logic {
             }
             Output.print(room.getRoomName(), "green");
         }
+    }
+
+    public static void redefineCoordinates(Coordinate[] coordinates) {
+        for(Coordinate i : coordinates){
+            int minX = Math.min(i.getX1(), i.getX2());
+            int minY = Math.min(i.getY1(), i.getY2());
+            int maxX = Math.max(i.getX1(), i.getX2());
+            int maxY = Math.max(i.getY1(), i.getY2());
+            i.setX1(minX);
+            i.setY1(minY);
+            i.setX2(maxX);
+            i.setY2(maxY);
+        }
+    }
+
+    public static double distanceBetween(Coordinate a, Coordinate b) {
+        int xA = (a.getX2()-a.getX1())/2;
+        int yA = (a.getY2()-a.getY1())/2;
+
+        int xB = (b.getX2()-b.getX1())/2;
+        int yB = (b.getY2()-b.getY1())/2;
+
+        xA += a.getX1();
+        yA += a.getY1();
+        xB += b.getX1();
+        yB += b.getY1();
+
+        return Math.sqrt((yB - yA) * (yB - yA) + (xB - xA) * (xB - xA));
+    }
+
+    public static Room[] getAdjacentsFromAdjacencyList(Room current, LinkedListCustom<LinkedListCustom<Room>> adjacencyMatrix, Room[] rooms) {
+        LinkedListCustom<Room> adjacents = (LinkedListCustom<Room>)adjacencyMatrix.get(current.getId());
+
+        return Logic.linkedListToArray(adjacents);
     }
 }

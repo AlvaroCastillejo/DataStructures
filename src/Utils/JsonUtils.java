@@ -1,9 +1,6 @@
 package Utils;
 
-import Database.Connection;
-import Database.Coordinate;
-import Database.Room;
-import Database.StoreObject;
+import Database.*;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -58,6 +55,19 @@ public class JsonUtils {
             Gson gson = new Gson();
             StoreObject[] storeObjects = gson.fromJson(file, StoreObject[].class);
             return storeObjects;
+        } catch (FileNotFoundException e) {
+            Output.print("Couldn't find \"" + f + "\". Exiting.", "red");
+            System.exit(0);
+        }
+        return null;
+    }
+    public static Player[] getPlayers(String fileName){
+        String f = new File("").getAbsolutePath();
+        try{
+            JsonReader file = new JsonReader(new FileReader(f.concat("/src/Assets/Players/" + fileName + ".json")));
+            Gson gson = new Gson();
+            Player[] players = gson.fromJson(file, Player[].class);
+            return players;
         } catch (FileNotFoundException e) {
             Output.print("Couldn't find \"" + f + "\". Exiting.", "red");
             System.exit(0);

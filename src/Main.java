@@ -10,8 +10,8 @@ import Utils.ScannerInput;
 public class Main {
     public static void main(String[] args) {
         //Database fill-up
-        Connection[] connections = JsonUtils.getConnections("ConnectionM");
-        Room[] rooms = JsonUtils.getRooms("RoomM");
+        Connection[] connections = JsonUtils.getConnections("ConnectionS");
+        Room[] rooms = JsonUtils.getRooms("RoomS");
 
         LinkedListCustom<Room> linkedListCustomRooms = new LinkedListCustom<>();
         linkedListCustomRooms.fill(rooms);
@@ -20,13 +20,13 @@ public class Main {
         linkedListCustomConnections.fill(connections);
 
         double[][] adjacencyMatrix = null;
-        /*try {
+        try {
             adjacencyMatrix = new double[rooms.length][rooms.length];
         } catch (NullPointerException exception){
             Output.print("Unknown error. Something to do with rooms file.", "red");
         }
 
-        Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);*/
+        Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);
 
         LinkedListCustom<LinkedListCustom<Room>> adjacencyList = new LinkedListCustom<>();
         Logic.initializeAdjacencyList(adjacencyList, rooms, connections);
@@ -54,9 +54,9 @@ public class Main {
             Output.print("Room not found. Try again.", "red");
         } while (true);
 
-
-
-        Room[] path = Dijkstra.dijkstra(adjacencyMatrix, initialRoom, finalRoom, rooms);
+        Room[] path = DijkstraAdjacencyList.dijkstra(adjacencyList, initialRoom, finalRoom, rooms);
         Logic.printSolution(path);
+        //Room[] path = Dijkstra.dijkstra(adjacencyMatrix, initialRoom, finalRoom, rooms);
+        //Logic.printSolution(path);
     }
 }

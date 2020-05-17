@@ -55,7 +55,4 @@ public class BinaryTree {
         System.out.println("Alvaro");
 
     }
-
-
-
 }

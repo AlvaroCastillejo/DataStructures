@@ -1,8 +1,11 @@
 package Model.AVL;
 
+import Database.Coordinate;
 import Database.StoreObject;
 import Utils.JsonUtils;
-import Utils.LinkedList.LinkedListCustom;
+import Utils.Output;
+import Utils.ScannerInput;
+import Utils.TreeArrayRepresentation;
 
 public class AVLTree {
 
@@ -54,38 +57,69 @@ public class AVLTree {
         balance(tree);
     }
 
-    public void delete(AVLTree tree, AVLNode object){
-        if(object.getObject().getPrice().equals(tree.getRoot().getObject().getPrice())){
-            deleteElement(tree, object);
-        } else {
-           if(object.getObject().getPrice() < tree.getRoot().getObject().getPrice()){
-               delete(new AVLTree(tree.getRoot().getL()), object);
-           } else {
-               delete(new AVLTree(tree.getRoot().getR()), object);
-           }
-        }
+    public StoreObject searchFor(AVLTree tree, AVLNode object){
+        StoreObject toReturn = null;
+        try{
+            if(object.getObject().getPrice().equals(tree.getRoot().getObject().getPrice())){
+                toReturn = tree.getRoot().getObject();
+                deleteElement(tree, object);
+            } else {
+                if(object.getObject().getPrice() < tree.getRoot().getObject().getPrice()){
+                    return searchFor(new AVLTree(tree.getRoot().getL()), object);
+                } else {
+                    return searchFor(new AVLTree(tree.getRoot().getR()), object);
+                }
+            }
+        } catch (NullPointerException ignore){}
 
-        tree.root.setAutoBalanceFactor(tree.calculateBalance());
-        balance(tree);
+        try{
+            tree.root.setAutoBalanceFactor(tree.calculateBalance());
+            balance(tree);
+        } catch (NullPointerException ignore){}
+
+        return toReturn;
     }
 
     private void deleteElement(AVLTree tree, AVLNode object) {
+        StoreObject toReturn = new StoreObject(tree.getRoot().getObject().getName());
         if(tree.root.isLeaf()){
-            tree.root = null;
-            return;
+            //toReturn = new StoreObject(tree.getRoot().getObject().getName());
+            tree.root.setObject(null);
+            return;  // toReturn;
         }
         if(!tree.root.hasLeftChild()){
+            toReturn = new StoreObject(tree.getRoot().getObject().getName());
             tree.root = new AVLNode(tree.root.getR());
-            return;
+            return;      //toReturn;
         }
         AVLNode newNode = (postOrder(tree.getRoot().getL()));
+        if(newNode.hasLeftChild()){
+            tree.root.getL().setNodeR(newNode.getL());
+        } else {
+            deletePostOrder(tree.getRoot().getL());
+        }
         tree.root.setObject(newNode.getObject());
-        try {
-            tree.root.setNodeR(newNode.getR());
-        } catch (NullPointerException ignore){}
-        try{
-            tree.root.setNodeL(newNode.getL());
-        } catch (NullPointerException ignore){}
+        //try {
+        //    tree.root.setNodeR(newNode.getR());
+        //} catch (NullPointerException ignore){}
+        //try{
+        //    tree.root.setNodeL(newNode.getL());
+        //} catch (NullPointerException ignore){}
+        //newNode = null;
+        //
+
+        tree.root.getL().setAutoBalanceFactor(new AVLTree(tree.root.getL()).calculateBalance());
+        balance(new AVLTree(tree.root.getL()));
+
+        //return toReturn;
+    }
+
+    private void deletePostOrder(AVLNode root) {
+        if(root.getR().getR() == null){
+            root.deleteR();
+        } else {
+            deletePostOrder(root.getR());
+        }
     }
 
     public AVLNode postOrder(AVLNode root) {
@@ -95,6 +129,7 @@ public class AVLTree {
         }
         return auxNode;
     }
+
     /**
      * Rotates the tree/subtree if needed. This maintains the tree balanced.
      * @param tree The tree to balance.
@@ -258,8 +293,45 @@ public class AVLTree {
         return root;
     }
 
-    public static void visualization(AVLNode node) {
+    public static void preorderVisualization(AVLNode node, int level) {
+        if(node == null){
+            return;
+        }
+        if(node.isLeaf()){
+            String tag = "";
+            for(int i = 0; i < level; i++){
+                tag = tag.concat("\t");
+            }
+            Output.print(tag.concat(String.valueOf(node.getObject().getPrice())), "green");
+        } else {
+            String levelTag = "";
+            for(int i = 0; i < level; i++){
+                levelTag = levelTag.concat("\t");
+            }
+            levelTag = levelTag.concat(String.valueOf(node.getObject().getPrice()));
+            Output.print(levelTag, "yellow");
+            preorderVisualization(node.getL(),level+1);
+            level--;
+            preorderVisualization(node.getR(), level+1);
+        }
+    }
 
+    private static void preorderToDeleteRemaining(AVLNode node) {
+        if(node.hasLeftChild()){
+            if(node.getL().getObject() == null){
+                node.deleteL();
+            } else {
+                preorderToDeleteRemaining(node.getL());
+            }
+        }
+
+        if(node.hasRightChild()){
+            if(node.getR().getObject() == null){
+                node.deleteR();
+            } else {
+                preorderToDeleteRemaining(node.getR());
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -270,8 +342,34 @@ public class AVLTree {
             tree.insert(tree, new AVLNode(object));
         }
 
-        tree.delete(tree, new AVLNode(a[0]));
+        TreeArrayRepresentation arrayTree = new TreeArrayRepresentation();
 
-        visualization(tree.getRoot());
+
+        StoreObject found = null;
+
+        outer:
+        while (true){
+            Output.print("------------------------\n\t1- Search\n\t2- Plot tree\n\t3. Exit\nOption:", "white");
+            int option = ScannerInput.askInteger();
+            switch (option){
+                case 1:
+                    Output.print("search for: ", "white");
+                    int price = ScannerInput.askInteger();
+                    found = tree.searchFor(tree, new AVLNode(new StoreObject(price)));
+                    if(found!=null){
+                        Output.print("Your item: " + found.getName(), "green");
+                        preorderToDeleteRemaining(tree.getRoot());
+                    } else {
+                        Output.print("Your item doesn't exist", "red");
+                    }
+                    break;
+                case 2:
+                    preorderVisualization(tree.getRoot(), 0);
+                    break;
+                default:
+                    break outer;
+            }
+
+        }
     }
 }

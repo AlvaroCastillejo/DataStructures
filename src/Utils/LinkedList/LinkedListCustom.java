@@ -70,7 +70,12 @@ public class LinkedListCustom<E> {
         }
         if(getCurrent() == null){
             Output.print("Index out of bounds: (" + i +"/" + this.size() + "). Exiting.", "red");
-            System.exit(0);
+            //System.exit(0);
+            return null;
+        }
+        Object obj = getCurrent();
+        if(obj instanceof Room){
+            Room aux = (Room)obj;
         }
         return getCurrent();
     }
@@ -126,5 +131,12 @@ public class LinkedListCustom<E> {
             }
             next();
         }
+    }
+
+    public static void main(String[] args) {
+        LinkedListCustom<Integer> list = new LinkedListCustom<>();
+        list.add(4);
+        list.add(10);
+        System.out.println(list.get(0));
     }
 }

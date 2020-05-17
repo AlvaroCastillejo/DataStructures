@@ -22,6 +22,10 @@ public class StoreObject {
         this.name = name;
     }
 
+    public StoreObject(int price) {
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
