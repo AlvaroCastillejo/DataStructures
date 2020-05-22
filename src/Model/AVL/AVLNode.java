@@ -3,10 +3,16 @@ package Model.AVL;
 import Database.StoreObject;
 
 public class AVLNode {
+    //The stored object in the node.
     private StoreObject object;
+    //Sons of this node.
     private AVLNode R, L;
+    //The difference of height between the two sons.
     private int autoBalanceFactor;
 
+    /**
+     * Empty constructor that generates a leaf node with no object in it.
+     */
     public AVLNode() {
         R = null;
         L = null;
@@ -14,6 +20,10 @@ public class AVLNode {
         object = null;
     }
 
+    /**
+     * Constructor with an object. It creates a leaf node with an object in it.
+     * @param object The object to store.
+     */
     public AVLNode(StoreObject object) {
         this.object = object;
         R = null;
@@ -21,6 +31,10 @@ public class AVLNode {
         autoBalanceFactor = 0;
     }
 
+    /**
+     * Constructor that creates a tree given a node. Used for creating subtrees.
+     * @param node The node to create the tree from.
+     */
     public AVLNode(AVLNode node){
 
         this.R = node.getR();
@@ -67,6 +81,10 @@ public class AVLNode {
 
     }
 
+    /**
+     * Recursive method that clones a given node/subtree to append it as the left child of this node.
+     * @param node The node/subtree to clone.
+     */
     public void setNodeL(AVLNode node){
         AVLNode l = new AVLNode();
         l.setObject(node.getObject());
@@ -81,6 +99,10 @@ public class AVLNode {
         this.L = l;
     }
 
+    /**
+     * Recursive method that clones a given node/subtree to append it as the right child of this node.
+     * @param node The node/subtree to clone.
+     */
     public void setNodeR(AVLNode node) {
         AVLNode r = new AVLNode();
         r.setObject(node.getObject());
@@ -104,6 +126,10 @@ public class AVLNode {
         this.autoBalanceFactor = autoBalanceFactor;
     }
 
+    /**
+     * Recursive method that calculates the height of the current node.
+     * @return the height of the node.
+     */
     public int getMaximumHeight() {
         if(R == null && L == null){
             return 1;

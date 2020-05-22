@@ -2,10 +2,22 @@ package Model.RTree;
 
 import Database.Coordinate;
 
+/*This InnerNode is one of the containers of a Node
+*  ____________Node_____
+* |   ____   |   ____   |
+* |  | 8  |  |  |  1 |  |
+* |  |____|  |  |_InnerNode
+* |__________|__________|
+*
+*
+*/
 public class InnerNodeRTree {
     private Coordinate object;
     private NodeRTree son;
 
+    /**
+     * Empty constructor.
+     */
     public InnerNodeRTree(){
         son = null;
         object = null;

@@ -32,14 +32,16 @@ public class AVLTree {
      * @param object The node you want to insert.
      */
     public void insert(AVLTree tree, AVLNode object) {
+        //If the tree is empty insert the object directly to the root.
         if(tree.getRoot() == null){
             root = new AVLNode();
             root.setObject(object.getObject());
             root.setAutoBalanceFactor(0);
             return;
         }
-
+        //If the tree is not empty look if the object to insert is bigger or lesser than the current node.
         if(object.getObject().getPrice() < tree.getRoot().getObject().getPrice()){
+            //If the current node is a leaf node then insert.
             if(tree.getRoot().getL() == null){
                 tree.root.setL(object.getObject());
             } else {
@@ -53,17 +55,26 @@ public class AVLTree {
             }
         }
 
+        //Calculate the balance as we return to the root.
         tree.root.setAutoBalanceFactor(tree.calculateBalance());
         balance(tree);
     }
 
+    /**
+     * Recursive method that search for a given object. Then delete it.
+     * @param tree The tree/subtree you want to search the object in.
+     * @param object The object you want to find.
+     * @return The found object;
+     */
     public StoreObject searchFor(AVLTree tree, AVLNode object){
         StoreObject toReturn = null;
         try{
+            //If object is found in the current level then deleted.
             if(object.getObject().getPrice().equals(tree.getRoot().getObject().getPrice())){
                 toReturn = tree.getRoot().getObject();
                 deleteElement(tree, object);
             } else {
+                //Go to the left or the right.
                 if(object.getObject().getPrice() < tree.getRoot().getObject().getPrice()){
                     return searchFor(new AVLTree(tree.getRoot().getL()), object);
                 } else {
@@ -72,6 +83,7 @@ public class AVLTree {
             }
         } catch (NullPointerException ignore){}
 
+        //Re-balance the tree
         try{
             tree.root.setAutoBalanceFactor(tree.calculateBalance());
             balance(tree);
@@ -80,18 +92,25 @@ public class AVLTree {
         return toReturn;
     }
 
+    /**
+     * Recursive method that search and deletes the desired element.
+     * @param tree The tree that contains the object you want to delete.
+     * @param object The object that represents the object in the tree that you want to delete.
+     */
     private void deleteElement(AVLTree tree, AVLNode object) {
         StoreObject toReturn = new StoreObject(tree.getRoot().getObject().getName());
+        //If we get to the leaf we just delete it.
         if(tree.root.isLeaf()){
-            //toReturn = new StoreObject(tree.getRoot().getObject().getName());
             tree.root.setObject(null);
-            return;  // toReturn;
+            return;
         }
+        //If the node to delete has no left child it is replaced with the right child.
         if(!tree.root.hasLeftChild()){
             toReturn = new StoreObject(tree.getRoot().getObject().getName());
             tree.root = new AVLNode(tree.root.getR());
-            return;      //toReturn;
+            return;
         }
+        //If none of the above options. Take the first element in the post-order.
         AVLNode newNode = (postOrder(tree.getRoot().getL()));
         if(newNode.hasLeftChild()){
             tree.root.getL().setNodeR(newNode.getL());
@@ -99,21 +118,16 @@ public class AVLTree {
             deletePostOrder(tree.getRoot().getL());
         }
         tree.root.setObject(newNode.getObject());
-        //try {
-        //    tree.root.setNodeR(newNode.getR());
-        //} catch (NullPointerException ignore){}
-        //try{
-        //    tree.root.setNodeL(newNode.getL());
-        //} catch (NullPointerException ignore){}
-        //newNode = null;
-        //
 
+        //Re-balance the tree.
         tree.root.getL().setAutoBalanceFactor(new AVLTree(tree.root.getL()).calculateBalance());
         balance(new AVLTree(tree.root.getL()));
-
-        //return toReturn;
     }
 
+    /**
+     * Searches for the first object in post-order and deletes it.
+     * @param root The root node of the tree/subject.
+     */
     private void deletePostOrder(AVLNode root) {
         if(root.getR().getR() == null){
             root.deleteR();
@@ -122,6 +136,11 @@ public class AVLTree {
         }
     }
 
+    /**
+     * Searches for the first object in post-order.
+     * @param root The root of the tree/subtree that you want to get the object from.
+     * @return The object found.
+     */
     public AVLNode postOrder(AVLNode root) {
         AVLNode auxNode = (root);
         for(int i = 0; auxNode.getR() != null; i++){
@@ -293,15 +312,22 @@ public class AVLTree {
         return root;
     }
 
+    /**
+     * Prints the tree in a pre-order.
+     * @param node The node from where you want to print.
+     * @param level The current node in the given tree.
+     */
     public static void preorderVisualization(AVLNode node, int level) {
         if(node == null){
             return;
         }
         if(node.isLeaf()){
             String tag = "";
+            //Depending on the level of the tree we are, the representation will be more indented o less.
             for(int i = 0; i < level; i++){
                 tag = tag.concat("\t");
             }
+            //Print in color green because we are on a leaf node.
             Output.print(tag.concat(String.valueOf(node.getObject().getPrice())), "green");
         } else {
             String levelTag = "";
@@ -316,6 +342,10 @@ public class AVLTree {
         }
     }
 
+    /**
+     * Searches for the first object in pre-order and deletes it.
+     * @param node The root node of the tree/subject.
+     */
     private static void preorderToDeleteRemaining(AVLNode node) {
         if(node.hasLeftChild()){
             if(node.getL().getObject() == null){

@@ -87,10 +87,18 @@ public class Coordinate {
         return area;
     }
 
+    /**
+     * It calculates and returns the coordinate of the middle of an object.
+     * @return the X coordinate of that point.
+     */
     public int getMiddleX() {
         return x1 + ((x2-x1)/2);
     }
 
+    /**
+     * It calculates and returns the ordinate of the middle of an object.
+     * @return the Y coordinate of that point,
+     */
     public int getMiddleY() {
         return y1 + ((y2-y1)/2);
     }
