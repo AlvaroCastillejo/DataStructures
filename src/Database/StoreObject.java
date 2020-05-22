@@ -20,6 +20,7 @@ public class StoreObject {
 
     public StoreObject(String name) {
         this.name = name;
+
     }
 
     public StoreObject(int price) {
