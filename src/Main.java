@@ -13,13 +13,14 @@ public class Main {
         Connection[] connections = JsonUtils.getConnections("ConnectionS");
         Room[] rooms = JsonUtils.getRooms("RoomS");
 
-        LinkedListCustom<Room> linkedListCustomRooms = new LinkedListCustom<>();
+        //Only for computational cost tests.
+        /*LinkedListCustom<Room> linkedListCustomRooms = new LinkedListCustom<>();
         linkedListCustomRooms.fill(rooms);
 
         LinkedListCustom<Connection> linkedListCustomConnections = new LinkedListCustom<>();
-        linkedListCustomConnections.fill(connections);
+        linkedListCustomConnections.fill(connections);*/
 
-        double[][] adjacencyMatrix = null;
+        /*double[][] adjacencyMatrix = null;
         try {
             adjacencyMatrix = new double[rooms.length][rooms.length];
         } catch (NullPointerException exception){
@@ -27,6 +28,7 @@ public class Main {
         }
 
         Logic.initializeAdjacencyMatrix(adjacencyMatrix, rooms, connections);
+        */
 
         LinkedListCustom<LinkedListCustom<Room>> adjacencyList = new LinkedListCustom<>();
         Logic.initializeAdjacencyList(adjacencyList, rooms, connections);
@@ -54,8 +56,10 @@ public class Main {
             Output.print("Room not found. Try again.", "red");
         } while (true);
 
+        //Dijkstra using adjacencyList.
         Room[] path = DijkstraAdjacencyList.dijkstra(adjacencyList, initialRoom, finalRoom, rooms);
         Logic.printSolution(path);
+        //Dijkstra using adjacencyMatrix. Only for computational cost tests.
         //Room[] path = Dijkstra.dijkstra(adjacencyMatrix, initialRoom, finalRoom, rooms);
         //Logic.printSolution(path);
     }

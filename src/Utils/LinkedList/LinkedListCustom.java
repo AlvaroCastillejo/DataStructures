@@ -4,6 +4,7 @@ import Database.Connection;
 import Database.Room;
 import Utils.Output;
 
+//Custom linked list used in the project.
 public class LinkedListCustom<E> {
     private int error;
     private Node<E> head;

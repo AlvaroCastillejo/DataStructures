@@ -2,6 +2,7 @@ package Utils;
 
 import Database.StoreObject;
 
+//Not used in this version.
 public class List {
     public static StoreObject[] addStoreObjectAtEnd(StoreObject object, StoreObject[] to, int index){
         StoreObject[] newObjectArray = new StoreObject[to.length+1];

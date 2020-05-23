@@ -9,6 +9,12 @@ import Utils.LinkedList.Node;
 import java.util.LinkedList;
 
 public class Logic {
+    /**
+     * Get a room by its ID.
+     * @param iRoomID The ID of the desired room.
+     * @param rooms The array containing all the rooms.
+     * @return The desired Room.
+     */
     public static Room getRoomByID(int iRoomID, Room[] rooms) {
         for (Room room : rooms) {
             if (room.getId().equals(iRoomID)) {
@@ -18,6 +24,13 @@ public class Logic {
         return null;
     }
 
+    /**
+     * Get the rooms that are connected to a given room.
+     * @param current The room we are looking for its connected rooms.
+     * @param adjacencyMatrix The matrix containing the information of the rooms.
+     * @param rooms All the rooms.
+     * @return An array containing all the rooms connected to de desired one.
+     */
     public static Room[] getAdjacents(Room current, double[][] adjacencyMatrix, Room[] rooms) {
         LinkedListCustom<Room> adjacents = new LinkedListCustom<>();
 
@@ -30,6 +43,11 @@ public class Logic {
         return Logic.linkedListToArray(adjacents);
     }
 
+    /**
+     * Function that casts a LinkedList to Array.
+     * @param adjacents LinkedList to be casted.
+     * @return The array casted.
+     */
     private static Room[] linkedListToArray(LinkedListCustom<Room> adjacents) {
         Room[] rooms = new Room[adjacents.size()];
 
@@ -41,12 +59,30 @@ public class Logic {
         return rooms;
     }
 
+    /**
+     * Function that returns the path to the final room updated.
+     * @param c Array that is the current path.
+     * @param adj New room to add.
+     * @param current Room we are in.
+     * @return Array of rooms updated.
+     */
     public static Room[] updateC(Room[] c, Room adj, Room current) {
         c[adj.getId()] = current;
         return c;
     }
 
+    /**
+     * Initializes the database for the adjacency matrix.
+     * @param adjacencyMatrix The matrix to fill.
+     * @param rooms All the rooms.
+     * @param connections All the connections.
+     */
     public static void initializeAdjacencyMatrix(double[][] adjacencyMatrix, Room[] rooms, Connection[] connections) {
+        //  _a___b___c_
+        //a|_0_|_1_|_0_|
+        //b|_1_|_0_|_1_|
+        //c|_0_|_1_|_0_|
+        //
         for (Room room : rooms) {
             for(int i = 0; i < rooms.length; i++){
                 adjacencyMatrix[room.getId()][i] = Logic.getConnectionValue(room.getId(), i, rooms, connections);
@@ -54,7 +90,18 @@ public class Logic {
         }
     }
 
+    /**
+     * Initializes the database for the adjacency list.
+     * @param adjacencyList The list to fill.
+     * @param rooms All the rooms.
+     * @param connections All the connections.
+     */
     public static void initializeAdjacencyList(LinkedListCustom<LinkedListCustom<Room>> adjacencyList, Room[] rooms, Connection[] connections) {
+        //
+        //a:b
+        //b:a,c
+        //c:b
+        //
         for(Room room : rooms){
             LinkedListCustom<Room> connectedRooms = new LinkedListCustom<>();
             for(Room innerRoom : rooms){
@@ -74,6 +121,14 @@ public class Logic {
         }
     }
 
+    /**
+     * Gets the connection values between two given rooms.
+     * @param roomA First room.
+     * @param roomB Second room.
+     * @param rooms All the rooms.
+     * @param connections All the connections.
+     * @return The value of the connection between.
+     */
     private static double getConnectionValue(int roomA, int roomB, Room[] rooms, Connection[] connections) {
         if(roomA == roomB){
             return -1;
@@ -86,12 +141,23 @@ public class Logic {
         return -1;
     }
 
+    /**
+     * Method that inserts rooms into empty array by id.
+     * @param c Empty array of rooms.
+     * @param rooms Array of rooms from database.
+     */
     public static void fillC(Room[] c, Room[] rooms) {
         for (Room room : rooms) {
             c[room.getId()] = room;
         }
     }
 
+    /**
+     * Function that finds the room of q with less weight consulting d.
+     * @param q Array of rooms from database.
+     * @param d Array that contains the weight of every room.
+     * @return The room found that has less cost to visit.
+     */
     public static Room findMinimumWeightRoom(Room[] q, double[] d) {
         double min = Double.MAX_VALUE;
         int index = -1;
@@ -104,6 +170,11 @@ public class Logic {
         return q[index];
     }
 
+    /**
+     * Method that set to visited a given room.
+     * @param current Room visited.
+     * @param rooms Array that contains the rooms from the database.
+     */
     public static void setRoomVisited(Room current, Room[] rooms) {
         for (Room room : rooms) {
             if (room.getId().equals(current.getId())) {
@@ -112,6 +183,14 @@ public class Logic {
         }
     }
 
+    /**
+     * Function that interprets the c array to get the path between initialRoom and finalRoom.
+     * @param c Array with the path made by the Dijkstra code.
+     * @param rooms Array of rooms.
+     * @param initialRoom Room we started from.
+     * @param finalRoom Last room we added to the path.
+     * @return Array with the final path ready to easily understand.
+     */
     public static Room[] getSolution(Room[] c, Room[] rooms, Room initialRoom, Room finalRoom) {
         Room[] solution = new Room[c.length];
 
@@ -129,6 +208,11 @@ public class Logic {
         return Logic.reverseArray(solution);
     }
 
+    /**
+     * Gets the index of the given array where the containing slot is not null..
+     * @param solution The array given.
+     * @return The index.
+     */
     private static int lastNotNull(Room[] solution) {
         for(int i = 0; i < solution.length; i++){
             if(solution[i] == null){
@@ -138,6 +222,11 @@ public class Logic {
         return solution.length;
     }
 
+    /**
+     * Reverses the given array. array:1,2,3,4 -Reversed-> array:4,3,2,1.
+     * @param array The given array.
+     * @return The array reversed.
+     */
     private static Room[] reverseArray(Room[] array) {
         for(int i=0; i<array.length/2; i++){
             Room temp = array[i];
@@ -147,6 +236,10 @@ public class Logic {
         return array;
     }
 
+    /**
+     * Prints the path of the solution.
+     * @param path The path given.
+     */
     public static void printSolution(Room[] path) {
         for(Room room : path){
             if(room == null){
@@ -156,6 +249,12 @@ public class Logic {
         }
     }
 
+    /**
+     * Function that standardizes the coordinates when given in other format. For instance this case:
+     * Original coordinates: (200,100),(100,50). The given coordinates are the left bottom and the right top corner.
+     * The format we want is the opposite. (100,50),(200,100).
+     * @param coordinates The translated coordinates.
+     */
     public static void redefineCoordinates(Coordinate[] coordinates) {
         for(Coordinate i : coordinates){
             int minX = Math.min(i.getX1(), i.getX2());
@@ -169,6 +268,12 @@ public class Logic {
         }
     }
 
+    /**
+     * Calculates the distance between two given points.
+     * @param a First point.
+     * @param b Second point.
+     * @return The distance.
+     */
     public static double distanceBetween(Coordinate a, Coordinate b) {
         int xA = (a.getX2()-a.getX1())/2;
         int yA = (a.getY2()-a.getY1())/2;
@@ -184,6 +289,13 @@ public class Logic {
         return Math.sqrt((yB - yA) * (yB - yA) + (xB - xA) * (xB - xA));
     }
 
+    /**
+     * Function that returns all the rooms that are connected to a given one.
+     * @param current Room given to get the adjacents from.
+     * @param adjacencyMatrix Is list that contains every connection of every room.
+     * @param rooms Unused for this version.
+     * @return Array of rooms connected to the given one.
+     */
     public static Room[] getAdjacentsFromAdjacencyList(Room current, LinkedListCustom<LinkedListCustom<Room>> adjacencyMatrix, Room[] rooms) {
         LinkedListCustom<Room> adjacents = (LinkedListCustom<Room>)adjacencyMatrix.get(current.getId());
 

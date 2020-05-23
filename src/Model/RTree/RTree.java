@@ -123,7 +123,6 @@ public class RTree {
                     delete(x, y, new RTree(tree.root.getInnerNodes()[i1].getSon(), DEGREE));
                 }
             }
-            Output.print("nose", "yellow");
         }
     }
 
@@ -192,7 +191,7 @@ public class RTree {
     }
 
     public static void main(String[] args) {
-        Coordinate[] coordinates = JsonUtils.getCoordinates("dataset_MapCustom_2");
+        Coordinate[] coordinates = JsonUtils.getCoordinates("dataset_MapS");
         Logic.redefineCoordinates(coordinates);
 
         RTree rTree = new RTree(2);
@@ -215,7 +214,7 @@ public class RTree {
                             case 1:
                                 Output.print("\t\tsearch for x: ", "white");
                                 int x = ScannerInput.askInteger();
-                                Output.print("search for y: ", "white");
+                                Output.print("\t\tsearch for y: ", "white");
                                 int y = ScannerInput.askInteger();
                                 Coordinate hit = rTree.searchFor(x, y, rTree);
                                 if(hit!=null) System.out.println("HIT: " + hit.getId());
@@ -237,11 +236,33 @@ public class RTree {
                     }
                     break;
                 case 2:
-                    Output.print("delete: ", "white");
+                    int x = 0;
+                    int y = 0;
+                    Output.print("Delete\n\t1- by Coordinates\n\t2- by Id\n\t3- exit\nOption:", "white");
+                    int optionSub = ScannerInput.askInteger();
+                    switch (optionSub){
+                        case 1:
+                            Output.print("\t\tdelete for x: ", "white");
+                            x = ScannerInput.askInteger();
+                            Output.print("\t\tdelete for y: ", "white");
+                            y = ScannerInput.askInteger();
+                            break;
+                        case 2:
+                            Output.print("\t\tdelete for id: ", "white");
+                            int askFor = ScannerInput.askInteger();
+                            coord = getCoord(askFor, coordinates);
+                            x = coord.getMiddleX();
+                            y = coord.getMiddleY();
+                            break;
+                        case 3:
+                            exit = true;
+                            break;
+                    }
+                    /*Output.print("delete: ", "white");
                     int askFor = ScannerInput.askInteger();
                     coord = getCoord(askFor, coordinates);
-                    if(coord == null) continue;
-                    rTree.delete(coord.getMiddleX(), coord.getMiddleY(), rTree);
+                    if(coord == null) continue;*/
+                    rTree.delete(x, y, rTree);
                     break;
                 case 3:
                     rTree.visualize(rTree.root, 0);
